@@ -1,0 +1,9 @@
+services:
+  make:
+    build: .
+    entrypoint: make
+    privileged: true
+    user: ${UID:-0}:${GID:-0}
+    volumes:
+    - .:/workspace
+    working_dir: /workspace
