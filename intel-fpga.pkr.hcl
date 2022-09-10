@@ -45,11 +45,11 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh {{ .Path }}"
     scripts = [
-      "scripts/pac_s10/intel-fpga.sh"
+      "scripts/pac_s10_dc/intel-fpga.sh"
     ]
   }
   source "qemu.centos7" {
-    name = "intel-fpga-pac_s10-centos7"
+    name = "intel-fpga-pac_s10_dc-centos7"
   }
 }
 
