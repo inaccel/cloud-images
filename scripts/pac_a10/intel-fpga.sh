@@ -25,6 +25,7 @@ if [ ${ID} = centos ]; then
 
 	# Download Intel FPGA packages
 	wget -O- "https://downloads.intel.com/akdlm/software/ias/1.2.1/a10_gx_pac_ias_1_2_1_pv_rte.tar.gz" | tar xz --strip-components 1
+	wget -O aocl-pro-rte.run "https://downloads.intel.com/akdlm/software/acdsinst/20.4/72/ib_installers/aocl-pro-rte-20.4.0.72-linux.run" && chmod +x aocl-pro-rte.run
 
 	# Download InAccel runtime
 	wget -O inaccel-fpga.rpm "https://dl.cloudsmith.io/public/inaccel/stable/rpm/any-distro/any-version/x86_64/inaccel-fpga-${INACCEL_FPGA}-1.x86_64.rpm"
@@ -46,6 +47,7 @@ if [ ${ID} = centos ]; then
 	# Install Intel FPGA packages
 	sed -e "s|more |cat |g" -e "s|yum install|yum install -y|g" -i setup.sh
 	yes | ${PWD}/setup.sh --installdir /opt --yes
+	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte --mode unattended
 	echo "@reboot bash /opt/intelrtestack/init_env.sh" | crontab
 
 	# Install InAccel runtime
@@ -64,6 +66,7 @@ elif [ ${ID} = ubuntu ]; then
 
 	# Download Intel FPGA packages
 	wget -O- "https://downloads.intel.com/akdlm/software/ias/1.2.1/a10_gx_pac_ias_1_2_1_pv_rte.tar.gz" | tar xz --strip-components 1
+	wget -O aocl-pro-rte.run "https://downloads.intel.com/akdlm/software/acdsinst/20.4/72/ib_installers/aocl-pro-rte-20.4.0.72-linux.run" && chmod +x aocl-pro-rte.run
 
 	# Download InAccel runtime
 	wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
@@ -71,6 +74,7 @@ elif [ ${ID} = ubuntu ]; then
 	# Install Intel FPGA packages
 	sed -e "s|more |cat |g" -e "s|apt-get install|apt-get install -y|g" -i setup.sh
 	yes | ${PWD}/setup.sh --installdir /opt --yes
+	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte --mode unattended
 	echo "@reboot bash /opt/intelrtestack/init_env.sh" | crontab
 
 	# Install InAccel runtime
