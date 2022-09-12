@@ -1,6 +1,6 @@
 build {
   post-processor "shell-local" {
-    command = "virt-sysprep --add output/${source.name}/${source.name}.qcow2 --operations defaults,-customize"
+    command = "virt-sysprep --add output/${source.name}/${source.name}.qcow2 --operations defaults,-cron-spool,-customize"
     execute_command = [
       "sudo",
       "sh",
@@ -29,7 +29,7 @@ build {
 
 build {
   post-processor "shell-local" {
-    command = "virt-sysprep --add output/${source.name}/${source.name}.qcow2 --operations defaults,-customize"
+    command = "virt-sysprep --add output/${source.name}/${source.name}.qcow2 --operations defaults,-cron-spool,-customize"
     execute_command = [
       "sudo",
       "sh",
