@@ -47,8 +47,12 @@ if [ ${ID} = centos ]; then
 	# Install Intel FPGA packages
 	sed -e "s|more |cat |g" -e "s|yum install|yum install -y|g" -i setup.sh
 	yes | ${PWD}/setup.sh --installdir /opt --yes
-	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte --mode unattended
-	echo "@reboot bash /opt/intelrtestack/init_env.sh" | crontab
+	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte/20.4 --mode unattended
+	cat << EOF > /opt/intelrtestack/init_devices.sh
+source /opt/intelrtestack/init_env.sh
+aocl list-devices | grep -A 1 --no-group-separator "Device Name" | grep -v "Device Name" | xargs -i aocl program {} /opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/hello_world.aocx
+EOF
+	echo "@reboot bash /opt/intelrtestack/init_devices.sh" | crontab
 
 	# Install InAccel runtime
 	if ! yum list installed inaccel-fpga; then
@@ -56,7 +60,7 @@ if [ ${ID} = centos ]; then
 	else
 		yum upgrade -y ./inaccel-fpga.rpm
 	fi
-	sed -e "s|/path/to/host|/opt/opencl_rte/aclrte-linux64/host|" -e "s|/path/to/opencl_bsp|/opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/opencl_bsp|" -i /etc/inaccel/runtimes/intel-fpga/inaccel.pc
+	sed -e "s|/path/to/host|/opt/opencl_rte/20.4/aclrte-linux64/host|" -e "s|/path/to/opencl_bsp|/opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/opencl_bsp|" -i /etc/inaccel/runtimes/intel-fpga/inaccel.pc
 
 	setenforce 1
 elif [ ${ID} = ubuntu ]; then
@@ -74,10 +78,14 @@ elif [ ${ID} = ubuntu ]; then
 	# Install Intel FPGA packages
 	sed -e "s|more |cat |g" -e "s|apt-get install|apt-get install -y|g" -i setup.sh
 	yes | ${PWD}/setup.sh --installdir /opt --yes
-	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte --mode unattended
-	echo "@reboot bash /opt/intelrtestack/init_env.sh" | crontab
+	${PWD}/aocl-pro-rte.run --accept_eula 1 --installdir /opt/opencl_rte/20.4 --mode unattended
+	cat << EOF > /opt/intelrtestack/init_devices.sh
+source /opt/intelrtestack/init_env.sh
+aocl list-devices | grep -A 1 --no-group-separator "Device Name" | grep -v "Device Name" | xargs -i aocl program {} /opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/hello_world.aocx
+EOF
+	echo "@reboot bash /opt/intelrtestack/init_devices.sh" | crontab
 
 	# Install InAccel runtime
 	apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./inaccel-fpga.deb
-	sed -e "s|/path/to/host|/opt/opencl_rte/aclrte-linux64/host|" -e "s|/path/to/opencl_bsp|/opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/opencl_bsp|" -i /etc/inaccel/runtimes/intel-fpga/inaccel.pc
+	sed -e "s|/path/to/host|/opt/opencl_rte/20.4/aclrte-linux64/host|" -e "s|/path/to/opencl_bsp|/opt/intelrtestack/a10_gx_pac_ias_1_2_1_pv/opencl/opencl_bsp|" -i /etc/inaccel/runtimes/intel-fpga/inaccel.pc
 fi
