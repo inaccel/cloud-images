@@ -21,7 +21,7 @@ INACCEL_FPGA=2.2.3
 if [ ${ID} = centos ]; then
 	setenforce 0
 
-	yum makecache && yum install -y wget
+	yum makecache && yum install -y ca-certificates wget
 
 	# Download Intel FPGA packages
 	wget -O- "https://downloads.intel.com/akdlm/software/ias/1.2.1/a10_gx_pac_ias_1_2_1_pv_rte.tar.gz" | tar xz --strip-components 1
@@ -66,7 +66,7 @@ EOF
 elif [ ${ID} = ubuntu ]; then
 	export DEBIAN_FRONTEND=noninteractive
 
-	apt update && apt install -y wget
+	apt update && apt install -y ca-certificates wget
 
 	# Download Intel FPGA packages
 	wget -O- "https://downloads.intel.com/akdlm/software/ias/1.2.1/a10_gx_pac_ias_1_2_1_pv_rte.tar.gz" | tar xz --strip-components 1
