@@ -2,6 +2,8 @@ services:
   make:
     build: .
     entrypoint: make
+    environment:
+      CI: ${CI:-false}
     privileged: true
     user: ${UID:-0}:${GID:-0}
     volumes:
