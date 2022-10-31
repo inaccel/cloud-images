@@ -18,3 +18,4 @@ jobs:
     - name: Upload cloud-images
       run: |
         find output -type f | xargs --replace aws s3 cp {} s3://inaccel/cloud-images/
+        echo LICENSE* NOTICE* README* | xargs --max-args 1 | xargs --replace aws s3 cp {} s3://inaccel/cloud-images/
