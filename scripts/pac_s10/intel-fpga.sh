@@ -28,9 +28,9 @@ if [ ${ID} = ubuntu ]; then
 	wget -O aocl-pro-rte.run 'https://downloads.intel.com/akdlm/software/acdsinst/20.4/72/ib_installers/aocl-pro-rte-20.4.0.72-linux.run'
 	chmod +x aocl-pro-rte.run
 
-	wget -O- 'https://downloads.intel.com/akdlm/software/acdsinst/19.2/57/ib_tar/intel_a10gx_pac.tar.gz' | tar xz --no-same-owner
-	chmod o=g -R intel_a10gx_pac
-	sed -e 's|--name /dev/|--sysname-match |g' -i intel_a10gx_pac/linux64/libexec/setup_permissions.sh
+	wget -O- 'https://downloads.intel.com/akdlm/software/acdsinst/19.2/57/ib_tar/intel_s10sx_pac.tar.gz' | tar xz --no-same-owner
+	chmod o=g -R intel_s10sx_pac
+	sed -e 's|--name /dev/|--sysname-match |g' -i intel_s10sx_pac/linux64/libexec/setup_permissions.sh
 
 	# Download InAccel runtime
 	wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
@@ -42,7 +42,7 @@ if [ ${ID} = ubuntu ]; then
 
 	cat << 'EOF' > /opt/intelrtestack/init_env.sh
 export INTELFPGAOCLSDKROOT=/opt/opencl_rte/aclrte-linux64
-export AOCL_BOARD_PACKAGE_ROOT=${INTELFPGAOCLSDKROOT}/board/intel_a10gx_pac
+export AOCL_BOARD_PACKAGE_ROOT=${INTELFPGAOCLSDKROOT}/board/intel_s10sx_pac
 export LD_LIBRARY_PATH=${AOCL_BOARD_PACKAGE_ROOT}/linux64/lib:${INTELFPGAOCLSDKROOT}/host/linux64/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 export PATH=${INTELFPGAOCLSDKROOT}/bin${PATH:+:${PATH}}
 EOF
@@ -50,13 +50,13 @@ EOF
 	. /opt/intelrtestack/init_env.sh
 
 	mkdir ${INTELFPGAOCLSDKROOT}/board
-	mv intel_a10gx_pac ${AOCL_BOARD_PACKAGE_ROOT}
+	mv intel_s10sx_pac ${AOCL_BOARD_PACKAGE_ROOT}
 
-	sed -e 's|PAC_CARD=""|PAC_CARD="pac_a10"|g' -e '/^check_for_card$/d' -e '/^init_pac_bsp$/d' -i.bak ${AOCL_BOARD_PACKAGE_ROOT}/linux64/libexec/install
+	sed -e 's|PAC_CARD=""|PAC_CARD="pac_s10"|g' -e '/^check_for_card$/d' -e '/^init_pac_bsp$/d' -i.bak ${AOCL_BOARD_PACKAGE_ROOT}/linux64/libexec/install
 	yes | PAC_BSP_ENV_NO_PERMISSIONS_INSTALL=1 aocl install
 	mv ${AOCL_BOARD_PACKAGE_ROOT}/linux64/libexec/install.bak ${AOCL_BOARD_PACKAGE_ROOT}/linux64/libexec/install
 
-	echo -n pac_a10 > /etc/fpga-variant
+	echo -n pac_s10 > /etc/fpga-variant
 	cat << 'EOF' > /opt/intelrtestack/init_devices.sh
 #!/bin/bash
 source /opt/intelrtestack/init_env.sh
