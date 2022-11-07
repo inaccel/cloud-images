@@ -30,7 +30,7 @@ if [ ${ID} = ubuntu ]; then
 
 	wget -O- 'https://downloads.intel.com/akdlm/software/acdsinst/19.2/57/ib_tar/intel_s10sx_pac.tar.gz' | tar xz --no-same-owner
 	chmod o=g -R intel_s10sx_pac
-	sed -e 's|--name /dev/|--sysname-match |g' -i intel_s10sx_pac/linux64/libexec/setup_permissions.sh
+	sed -e 's|sudo udevadm trigger --name /dev/intel-fpga-fme.*|ls -1 /dev/intel-fpga-fme.* \| xargs -i sudo udevadm trigger --name {}|g' -e 's|sudo udevadm trigger --name /dev/intel-fpga-port.*|ls -1 /dev/intel-fpga-port.* \| xargs -i sudo udevadm trigger --name {}|g' -i intel_s10sx_pac/linux64/libexec/setup_permissions.sh
 
 	# Download InAccel runtime
 	wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
