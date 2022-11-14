@@ -54,9 +54,9 @@ data "sshkey" "temporary" {}
 
 packer {
   required_plugins {
-    openstack = {
+    sshkey = {
       source  = "github.com/ivoronin/sshkey"
-      version = ">= 1.0.0"
+      version = "= 1.0.3"
     }
   }
 }

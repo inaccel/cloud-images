@@ -14,7 +14,7 @@ trap "rm -fr ${TMPDIR}" EXIT
 ################################################################################
 
 # InAccel runtime
-INACCEL_FPGA=2.2.3
+INACCEL_FPGA=2.2.4
 
 . /etc/os-release
 
@@ -34,6 +34,9 @@ if [ ${ID} = ubuntu ]; then
 
 	# Download InAccel runtime
 	wget -O inaccel-fpga.deb "https://dl.cloudsmith.io/public/inaccel/stable/deb/any-distro/pool/any-version/main/i/in/inaccel-fpga_${INACCEL_FPGA}/inaccel-fpga_${INACCEL_FPGA}_amd64.deb"
+
+	# Install Linux Extra Modules (required by Intel FPGA packages)
+	apt install -y linux-modules-extra-$(uname -r)
 
 	# Install Intel FPGA packages
 	mkdir /opt/intelrtestack
