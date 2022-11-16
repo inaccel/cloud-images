@@ -56,7 +56,7 @@ packer {
   required_plugins {
     sshkey = {
       source  = "github.com/ivoronin/sshkey"
-      version = "= 1.0.3"
+      version = ">= 1.0.0"
     }
   }
 }

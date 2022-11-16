@@ -72,7 +72,7 @@ configure_permission
 init_pac_bsp
 EOF
 	chmod +x /opt/intelrtestack/init_devices.sh
-	echo '@reboot PAC_BSP_ENV_NUM_HUGEPAGES=4 /opt/intelrtestack/init_devices.sh' | crontab
+	echo '@reboot PAC_BSP_ENV_NUM_HUGEPAGES=32 /opt/intelrtestack/init_devices.sh' | crontab
 
 	# Install InAccel runtime
 	apt install -o Dpkg::Options::=--refuse-downgrade -y --allow-downgrades ./inaccel-fpga.deb
