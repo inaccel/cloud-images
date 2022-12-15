@@ -14,7 +14,7 @@ trap "rm -fr ${TMPDIR}" EXIT
 ################################################################################
 
 # InAccel runtime
-INACCEL_FPGA=2.2.4
+INACCEL_FPGA=2.2.5
 
 . /etc/os-release
 
